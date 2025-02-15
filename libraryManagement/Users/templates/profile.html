@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-3">
+    <h2>Welcome, {{ user.username }}</h2>
+
+<p><strong>Email:</strong> {{ user.email }}</p>
+<p><strong>Balance:</strong> ${{ account.balance }}</p>
+
+
+<h3>Borrowed Books</h3>
+<table class="table table-dark table-striped-columns">
+    <thead >
+        <tr>
+            <th>Transaction ID</th>
+            <th>Book Title</th>
+            <th>Price</th>
+            <th>Balance After Borrow</th>
+            <th>Borrow Date</th>
+            <th>Return Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in borrowed_books %}
+        <tr>
+            <td>{{ transaction.transaction_id }}</td>
+            <td>{{ transaction.book.title }}</td>
+            <td>${{ transaction.book.price }}</td>
+            <td>${{ account.balance }}</td>
+            <td>{{ transaction.borrow_date }}</td>
+            <td>{% if transaction.returned %}✅ Returned{% else %}❌ Not Returned{% endif %}</td>
+            <td>
+                {% if not transaction.returned %}
+                <form action="{% url 'return_book' transaction.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Return</button>
+                </form>
+                {% else %}
+                <button disabled>Returned</button>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">You have no borrowed books.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock content %}

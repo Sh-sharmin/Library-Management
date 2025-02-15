@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Deposit Money</h2>
+    <p>Your current balance: <strong>{{ balance }} $</strong></p>
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Deposit</button>
+    </form>
+</div>
+
+{% endblock content %}

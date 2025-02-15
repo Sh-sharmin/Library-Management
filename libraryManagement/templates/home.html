@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Categories</h2>
+    <div class="mb-4">
+        <strong>Filter by Category:</strong>
+        <ul class="list-inline">
+            <li class="list-inline-item p-3 m-4">
+                <a href="{% url 'homepage' %}" class="btn btn-info text-decoration-none text-dark">See All Categories</a>
+            </li>
+            {% for cat in categories %}
+                <li class="list-inline-item p-3 m-4">
+                    <a href="?cat={{ cat.name }}" class="btn btn-info text-decoration-none text-dark">{{ cat.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="row">
+        {% for book in books %}
+        <div class="col-2 m-3">
+            <div class="card" style="width: 200px;">
+                <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p>{{book.description| truncatewords:5}}</p>
+                    <p class="card-text"><strong>Price:</strong> ${{ book.price }}</p>
+                    <a href="{% url 'book_details' book.id %}" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
